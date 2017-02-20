@@ -9,4 +9,6 @@ RUN curl -O https://download.civicrm.org/civicrm-4.7.16-wordpress.zip?src=donate
 
 RUN unzip civicrm-4.7.16-wordpress.zip\?src\=donate 
 
+RUN chown -R www-data:www-data /usr/src/wordpress
+
 WORKDIR /var/www/html/
