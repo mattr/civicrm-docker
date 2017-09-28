@@ -6,21 +6,25 @@ RUN docker-php-ext-install zip
 
 WORKDIR /usr/src/wordpress/wp-content/plugins
 
-RUN curl -O https://download.civicrm.org/civicrm-4.7.16-wordpress.zip?src=donate
+ENV CIVICRM_VERSION 4.7.24
+ENV CIVICRM_STRIPE_VERSION 4.7.2
+ENV CIVICRM_WP_MEMBER_VERSION 0.3.2
 
-RUN unzip civicrm-4.7.16-wordpress.zip\?src\=donate 
+RUN curl -O https://download.civicrm.org/civicrm-${CIVICRM_VERSION}-wordpress.zip?src=donate civicrm-wordpress.zip
 
-RUN curl -O https://codeload.github.com/drastik/com.drastikbydesign.stripe/zip/4.7.1
+RUN unzip civicrm-wordpress.zip
+
+RUN curl -O https://codeload.github.com/drastik/com.drastikbydesign.stripe/zip/${CIVICRM_STRIPE_VERSION} stripe.zip
 
 RUN mkdir -p ../uploads/civicrm/ext/
 
-RUN unzip 4.7.1 -d ../uploads/civicrm/ext/
+RUN unzip stripe.zip -d ../uploads/civicrm/ext/
 
-RUN mv ../uploads/civicrm/ext/com.drastikbydesign.stripe-4.7.1/ ../uploads/civicrm/ext/com.drastikbydesign.stripe 
+RUN mv ../uploads/civicrm/ext/com.drastikbydesign.stripe-${CIVICRM_STRIPE_VERSION}/ ../uploads/civicrm/ext/com.drastikbydesign.stripe 
 
-RUN curl -O https://downloads.wordpress.org/plugin/civicrm-wp-member-sync.0.3.1.zip
+RUN curl -O https://downloads.wordpress.org/plugin/civicrm-wp-member-sync.${CIVICRM_WP_MEMBER_VERSION}.zip civicrm-wp-member-sync.zip
 
-RUN unzip civicrm-wp-member-sync.0.3.1.zip 
+RUN unzip civicrm-wp-member-sync.zip 
 
 RUN chown -R www-data:www-data /usr/src/wordpress
 
